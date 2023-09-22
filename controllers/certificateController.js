@@ -13,3 +13,15 @@ exports.addCertificate=async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   }
+
+  exports.getCertificate=async(req,res)=>{
+    try {
+        const certificate = await Certificate.find({user:req.params.id});
+        if (!certificate) {
+          return res.status(404).json({ error: 'Certificate not found' });
+        }
+        res.json(certificate);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+  }
