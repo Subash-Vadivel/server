@@ -24,6 +24,10 @@ const certificateSchema = new mongoose.Schema({
     type: String, // Store the URL where the PDF file is located
     required: true,
   },
+  certificateHash:{
+    type:String,
+    required:true
+  }
 });
 
 // Create Certificate model

@@ -18,8 +18,14 @@ app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(cookieParser());
 
 const AuthRouter = require('./routes/authRouter');
+const Transaction=require('./routes/transaction');
+const Certificate=require('./routes/certificateRoute');
 
 app.use('/accounts', AuthRouter);
+
+app.use('/transaction', Transaction);
+
+app.use('/certificate',Certificate)
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
