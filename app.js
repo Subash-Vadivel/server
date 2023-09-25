@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser'); // Import body-parser
+const formData = require('express-form-data');
 
 const jwt = require('jsonwebtoken');
 
@@ -16,9 +16,9 @@ app.use(
 require('./db');
 
 // app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.json({ limit: '500kb' }));
-app.use(express.urlencoded({ extended: true, limit: '500kb' }));
+app.use(express.json());
 app.use(cookieParser());
+app.use(formData.parse());
 
 const AuthRouter = require('./routes/authRouter');
 const Transaction=require('./routes/transaction');

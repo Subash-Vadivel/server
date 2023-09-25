@@ -1,17 +1,22 @@
-const Certificate=require("../models/Certificates")
+const Certificate=require("../models/Certificates");
+const UploadFile = require("../s3");
 exports.addCertificate=async (req, res) => {
     try {
-      const certificateData = req.body;
-      console.log(req.body);
+      const {name,user,issuedBy,issueDate,certificateHash,file,fileType}=req.body;
       const available=await Certificate.findOne({certificateHash:req.body.certificateHash})
       if(available){
         return res.status(400).json({ error: "Already Exsist" });
       }
-      const certificate = new Certificate(certificateData);
+      const pdfUrl=await UploadFile(file,name,issuedBy,fileType);
+      console.log("saved URL : ",pdfUrl);
+      if(!pdfUrl)
+       return res.status(404).json({ error: "Not Saved" });
+      const certificate = new Certificate({name,user,issuedBy,issueDate,certificateHash,pdfUrl});
       await certificate.save();
       return res.status(201).json(certificate);
-    } catch (error) {
-     return  res.status(500).json({ error: error.message });
+    } catch (err) {
+      console.log(err);
+     return  res.status(500).json({ error: err });
     }
   }
 
