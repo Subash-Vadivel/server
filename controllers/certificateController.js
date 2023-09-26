@@ -1,3 +1,4 @@
+const { validate, hashFile } = require("../helpers/certificateHelper");
 const Certificate=require("../models/Certificates");
 const UploadFile = require("../s3");
 exports.addCertificate=async (req, res) => {
@@ -30,4 +31,18 @@ exports.addCertificate=async (req, res) => {
       } catch (error) {
         res.status(500).json({ error: error.message });
       }
+  }
+
+  exports.validate=async(req,res)=>{
+    try {
+      const hashedFile=await hashFile(req.body.file);
+      const result=validate(hashedFile);
+      if (!result) {
+        return res.status(400).json({ error: 'Some Thing Went Wrong' });
+      }
+      return res.json(result).status(200);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: error.message });
+    }
   }

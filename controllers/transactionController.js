@@ -1,3 +1,4 @@
+const { mint } = require("../helpers/transactionHeler");
 const Transaction=require("../models/Transactions")
 
 exports.log=async (req, res) => {
@@ -25,4 +26,17 @@ exports.log=async (req, res) => {
       } catch (error) {
         res.status(500).json({ error: error.message });
       }
+  }
+
+  exports.addBlock=async(req,res)=>{
+    try{
+         await mint(req);
+         res.status(201).json({message:"Success"});
+
+    }
+    catch(error){
+      console.log(error);
+      res.status(500).json({ error: error.message });
+
+    }
   }
