@@ -3,13 +3,11 @@ const Transaction=require("../models/Transactions")
 
 exports.log=async (req, res) => {
     const transactionData = req.body;
-    console.log(transactionData);
   
     try {
       const transaction = new Transaction(transactionData);
   // Save the user document to the database
   await transaction.save();
-      console.log(transaction);
       res.status(201).json(transaction);
     } catch (err) {
       res.status(400).json({ error: err.message });
@@ -30,13 +28,14 @@ exports.log=async (req, res) => {
 
   exports.addBlock=async(req,res)=>{
     try{
-         await mint(req);
-         res.status(201).json({message:"Success"});
+         const result=await mint(req);
+         console.log(result);
+         res.status(201).json({message:"Success",transactionHash:result});
 
     }
     catch(error){
       console.log(error);
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error});
 
     }
   }

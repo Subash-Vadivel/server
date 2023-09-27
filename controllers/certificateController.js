@@ -35,8 +35,8 @@ exports.addCertificate=async (req, res) => {
 
   exports.validate=async(req,res)=>{
     try {
-      const hashedFile=await hashFile(req.body.file);
-      const result=validate(hashedFile);
+      // const hashedFile=await hashFile(req.body.file);
+      const result=await validate(req.body.certificateHash);
       if (!result) {
         return res.status(400).json({ error: 'Some Thing Went Wrong' });
       }
